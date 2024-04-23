@@ -60,3 +60,11 @@ BEGIN
     CLOSE cur_desc_longa; 
 END;
 $$
+
+-- 4 Armazenamento dos resultados
+CREATE TABLE tb_resultados(
+	cod_resultado SERIAL PRIMARY KEY,
+	nome_pais VARCHAR(200),
+	preco_medio NUMERIC(10,2),
+	descricao_mais_longa VARCHAR(1000)
+);
