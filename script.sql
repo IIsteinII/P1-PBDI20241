@@ -31,7 +31,32 @@ BEGIN
         media = tupla.preco / tupla.quantidade;   
         RAISE NOTICE '%, %', tupla.country, media; 
 	END LOOP;
-	-- 4. Fecha cursor
+	-- 3. Fecha cursor
 	CLOSE cur_leitura;
+END;
+$$
+
+----3 Cursor vinculado
+--Identificar a descrição mais longa para os vinhos de cada país utilizando um cursor vinculado
+DO $$
+DECLARE
+    -- 1. Declara cursor 
+    cur_desc_longa CURSOR FOR SELECT country, MAX(description) AS description
+                              FROM tb_wine
+							  WHERE country is NOT NULL
+                              GROUP BY country;
+    tupla RECORD;
+    resultado TEXT DEFAULT '';
+BEGIN
+    -- 2. Abre o cursor 
+    OPEN cur_desc_longa;
+    FETCH cur_desc_longa INTO tupla;
+    -- loop para exibir itens
+    WHILE FOUND LOOP
+        FETCH cur_desc_longa INTO tupla;
+		RAISE NOTICE '% %', tupla.country, tupla.description;
+    END LOOP;
+    -- 3. Fecha cursor
+    CLOSE cur_desc_longa; 
 END;
 $$
